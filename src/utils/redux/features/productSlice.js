@@ -5,11 +5,26 @@ import {
 } from "@reduxjs/toolkit";
 import axios from "axios";
 
-// Buat thunk untuk mengambil data
+// Base URL API
+const apiUrl = " http://localhost:2023/products";
+
+// Buat thunk async untuk get request
 export const getProducts = createAsyncThunk(
   "products/getProducts",
   async () => {
-    const response = await axios.get(" http://localhost:2023/products");
+    const response = await axios.get(apiUrl);
+    return response.data;
+  }
+);
+
+// Buat thunk async untuk post request
+export const addNewProduct = createAsyncThunk(
+  "products/addNewProduct",
+  async ({ title, price }) => {
+    const response = await axios.post(apiUrl, {
+      title,
+      price,
+    });
     return response.data;
   }
 );
@@ -31,6 +46,7 @@ const productSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
+    // reducer untuk get request
     builder
       .addCase(getProducts.pending, (state) => {
         state.status = "loading";
@@ -40,6 +56,20 @@ const productSlice = createSlice({
         productsAdapter.setAll(state, action.payload);
       })
       .addCase(getProducts.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.error.message;
+      });
+
+    // reducer untuk post request
+    builder
+      .addCase(addNewProduct.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(addNewProduct.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        productsAdapter.addOne(state, action.payload);
+      })
+      .addCase(addNewProduct.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message;
       });

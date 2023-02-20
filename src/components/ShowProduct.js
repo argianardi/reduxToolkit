@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import {
   getProducts,
   productSelectors,
@@ -25,6 +26,9 @@ const ShowProduct = () => {
 
   return (
     <div className="box mt-5">
+      <Link to="add" className="button is-success">
+        Add New
+      </Link>
       <table className="table is-striped is-fullwidth">
         <thead>
           <tr>
@@ -41,7 +45,12 @@ const ShowProduct = () => {
               <td>{product.title}</td>
               <td>{product.price}</td>
               <td>
-                <button className="button is-info is-mall">Edit</button>
+                <Link
+                  to={`edit/${product.id}`}
+                  className="button is-info is-mall"
+                >
+                  Edit
+                </Link>
                 <button className="button is-danger is-mall">Delete</button>
               </td>
             </tr>
