@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 
-const AddProducts = () => {
+const EditProducts = () => {
   const [title, setTitle] = useState("");
   const [price, setPrice] = useState("");
   const dispatch = useDispatch();
@@ -41,4 +41,4 @@ const AddProducts = () => {
   );
 };
 
-export default AddProducts;
+export default EditProducts;
