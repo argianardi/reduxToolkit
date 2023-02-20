@@ -2,9 +2,9 @@ import React from "react";
 import { createRoot } from "react-dom/client";
 import { Provider } from "react-redux";
 import { store } from "./utils/redux/store/store";
-import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import "bulma/css/bulma.css";
+import App from "./routes/App";
 
 const container = document.getElementById("root");
 const root = createRoot(container);
