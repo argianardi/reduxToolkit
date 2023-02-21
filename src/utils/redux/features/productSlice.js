@@ -29,6 +29,15 @@ export const addNewProduct = createAsyncThunk(
   }
 );
 
+// Buat thunk async untuk delete request
+export const deleteProduct = createAsyncThunk(
+  "products/deleteProduct",
+  async (id) => {
+    await axios.delete(`${apiUrl}/${id}`);
+    return id;
+  }
+);
+
 // Buat adapter untuk menyimpan data dalam array entities
 const productsAdapter = createEntityAdapter({
   selectId: (product) => product.id,
@@ -36,8 +45,17 @@ const productsAdapter = createEntityAdapter({
 
 // Buat initial state untuk mengisi nilai awal state
 const initialState = productsAdapter.getInitialState({
-  status: "idle",
-  error: null,
+  // inisital state get Products
+  getProductsStatus: "idle",
+  getProductsError: null,
+
+  // inisital state post Products
+  addProductStatus: "idle",
+  addProductError: null,
+
+  // inisital state delete Products
+  deleteProductStatus: "idle",
+  deleteProductError: null,
 });
 
 // Buat slice untuk mengelola state
@@ -46,32 +64,46 @@ const productSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    // reducer untuk get request
+    // reducer untuk get products
     builder
       .addCase(getProducts.pending, (state) => {
-        state.status = "loading";
+        state.getProductsStatus = "loading";
       })
       .addCase(getProducts.fulfilled, (state, action) => {
-        state.status = "succeeded";
+        state.getProductsStatus = "succeeded";
         productsAdapter.setAll(state, action.payload);
       })
       .addCase(getProducts.rejected, (state, action) => {
-        state.status = "failed";
-        state.error = action.error.message;
+        state.getProductsStatus = "failed";
+        state.getProductsError = action.error.message;
       });
 
-    // reducer untuk post request
+    // reducer untuk add product
     builder
       .addCase(addNewProduct.pending, (state) => {
-        state.status = "loading";
+        state.addProductStatus = "loading";
       })
       .addCase(addNewProduct.fulfilled, (state, action) => {
-        state.status = "succeeded";
+        state.addProductStatus = "succeeded";
         productsAdapter.addOne(state, action.payload);
       })
       .addCase(addNewProduct.rejected, (state, action) => {
-        state.status = "failed";
-        state.error = action.error.message;
+        state.addProductStatus = "failed";
+        state.addProductError = action.error.message;
+      });
+
+    // reducer untuk delete request
+    builder
+      .addCase(deleteProduct.pending, (state) => {
+        state.deleteProductStatus = "loading";
+      })
+      .addCase(deleteProduct.fulfilled, (state, action) => {
+        state.deleteProductStatus = "succeeded";
+        productsAdapter.removeOne(state, action.payload);
+      })
+      .addCase(deleteProduct.rejected, (state, action) => {
+        state.deleteProductStatus = "failed";
+        state.deleteProductError = action.error.message;
       });
   },
 });

@@ -1,54 +1,14 @@
 {
   "products": [
     {
-      "id": 1,
-      "title": "product 1",
-      "price": 899
+      "title": "dfdf123",
+      "price": "12313",
+      "id": 1
     },
     {
-      "id": 2,
-      "title": "product 2",
-      "price": 794
-    },
-    {
-      "id": 3,
-      "title": "product 3",
-      "price": 873
-    },
-    {
-      "id": 4,
-      "title": "product 4",
-      "price": 763
-    },
-    {
-      "id": 5,
-      "title": "product 5",
-      "price": 963
-    },
-    {
-      "title": "product baru",
-      "price": "123",
-      "id": 6
-    },
-    {
-      "title": "product anyar",
-      "price": "123",
-      "id": 7
-    },
-    {
-      "title": "product anyar lagi",
-      "price": "1234",
-      "id": 8
-    },
-    {
-      "title": "product boru",
-      "price": "12323",
-      "id": 9
-    },
-    {
-      "title": "dfdfd",
-      "price": "1232323",
-      "id": 10
+      "title": "qwerewr",
+      "price": "12345",
+      "id": 2
     }
   ]
 }

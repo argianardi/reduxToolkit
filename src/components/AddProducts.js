@@ -8,8 +8,12 @@ const AddProducts = () => {
   const [price, setPrice] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const productsStatus = useSelector((state) => state.products.status);
-  const productsError = useSelector((state) => state.products.error);
+  const addProductStatus = useSelector(
+    (state) => state.products.addProductStatus
+  );
+  const addProductError = useSelector(
+    (state) => state.products.addProductError
+  );
 
   const addProduct = async (e) => {
     e.preventDefault();
@@ -17,12 +21,12 @@ const AddProducts = () => {
     navigate("/");
   };
 
-  if (productsStatus === "loading") {
+  if (addProductStatus === "loading") {
     return <div> Loading..............</div>;
   }
 
-  if (productsStatus === "failed") {
-    return <div>Error: {productsError}</div>;
+  if (addProductStatus === "failed") {
+    return <div>Error: {addProductError}</div>;
   }
 
   return (
