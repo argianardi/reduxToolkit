@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import {
+  deleteProduct,
   getProducts,
   productSelectors,
 } from "../utils/redux/features/productSlice";
@@ -9,19 +10,29 @@ import {
 const ShowProduct = () => {
   const dispatch = useDispatch();
   const products = useSelector(productSelectors.selectAll);
-  const productsStatus = useSelector((state) => state.products.status);
-  const productsError = useSelector((state) => state.products.error);
+  const getProductsStatus = useSelector(
+    (state) => state.products.getProductsStatus
+  );
+  const getProductsError = useSelector(
+    (state) => state.products.getProductsError
+  );
+  const deleteProductStatus = useSelector(
+    (state) => state.products.deleteProductStatus
+  );
+  const deleteProductError = useSelector(
+    (state) => state.products.deleteProductError
+  );
 
   useEffect(() => {
     dispatch(getProducts());
   }, [dispatch]);
 
-  if (productsStatus === "loading") {
+  if (getProductsStatus === "loading") {
     return <div> Loading..............</div>;
   }
 
-  if (productsStatus === "failed") {
-    return <div>Error: {productsError}</div>;
+  if (getProductsStatus === "failed") {
+    return <div>Error: {getProductsError}</div>;
   }
 
   return (
@@ -51,12 +62,22 @@ const ShowProduct = () => {
                 >
                   Edit
                 </Link>
-                <button className="button is-danger is-mall">Delete</button>
+                <button
+                  onClick={() => dispatch(deleteProduct(product.id))}
+                  className="button is-danger is-mall"
+                >
+                  {deleteProductStatus === "loading"
+                    ? "Deleting...."
+                    : "Delete"}
+                </button>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
+      {deleteProductStatus === "failed" && (
+        <div> Error deleting product: {deleteProductError} </div>
+      )}
     </div>
   );
 };
