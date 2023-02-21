@@ -38,6 +38,18 @@ export const deleteProduct = createAsyncThunk(
   }
 );
 
+// Buat thunk async untuk put request
+export const editProduct = createAsyncThunk(
+  "products/editProduct",
+  async ({ id, title, price }) => {
+    const response = await axios.put(`${apiUrl}/${id}`, {
+      title,
+      price,
+    });
+    return response.data;
+  }
+);
+
 // Buat adapter untuk menyimpan data dalam array entities
 const productsAdapter = createEntityAdapter({
   selectId: (product) => product.id,
@@ -56,6 +68,10 @@ const initialState = productsAdapter.getInitialState({
   // inisital state delete Products
   deleteProductStatus: "idle",
   deleteProductError: null,
+
+  // initial state put product
+  editProductStatus: "idle",
+  editProductError: null,
 });
 
 // Buat slice untuk mengelola state
@@ -104,6 +120,23 @@ const productSlice = createSlice({
       .addCase(deleteProduct.rejected, (state, action) => {
         state.deleteProductStatus = "failed";
         state.deleteProductError = action.error.message;
+      });
+
+    // reducer untuk put request
+    builder
+      .addCase(editProduct.pending, (state, action) => {
+        state.editProductStatus = "loading";
+      })
+      .addCase(editProduct.fulfilled, (state, action) => {
+        state.editProductStatus = "succeeded";
+        productsAdapter.updateOne(state, {
+          id: action.payload.id,
+          updates: action.payload,
+        });
+      })
+      .addCase(editProduct.rejected, (state, action) => {
+        state.editProductStatus = "failed";
+        state.editProductError = action.error.message;
       });
   },
 });
